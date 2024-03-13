@@ -42,8 +42,8 @@ const getTodos = async (req, res) => {
 
 const createTodo = async (req, res) => {
   console.log("create note", req.body);
-  const { title, description, category } = req.body;
-  console.log(description);
+  const { title, description, category, dueDate } = req.body;
+  console.log(dueDate);
 
   if (!title || !description || !category) {
     throw new BadRequestError("Please provide all values");
@@ -52,6 +52,8 @@ const createTodo = async (req, res) => {
     title,
     description,
     category,
+    dueDate: dueDate,
+
     createdBy: req.user.userId,
   });
 
@@ -97,9 +99,4 @@ const deleteTodo = async (req, res) => {
   res.status(httpStatusCodes.OK).json({ task, msg: "Item deleted!" });
 };
 
-export {
-  getTodos,
-  createTodo,
-  updateTodo,
-  deleteTodo,
-};
+export { getTodos, createTodo, updateTodo, deleteTodo };

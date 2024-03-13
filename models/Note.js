@@ -19,6 +19,9 @@ const NoteSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref:'Users',
       required:[true, 'please provide user']
+    },
+    dueDate:{
+      type: Date
     }
   },
   { timestamps: true }
