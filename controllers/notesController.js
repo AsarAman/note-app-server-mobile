@@ -112,6 +112,8 @@ const getCategories = async (req, res) => {
     }
   });
 
+  categories.unshift('all')
+
   console.log(categories, "categories");
   res.status(httpStatusCodes.OK).json({ categories, msg: "Your categories" });
  
