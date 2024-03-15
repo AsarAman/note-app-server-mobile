@@ -99,4 +99,22 @@ const deleteTodo = async (req, res) => {
   res.status(httpStatusCodes.OK).json({ task, msg: "Item deleted!" });
 };
 
-export { getTodos, createTodo, updateTodo, deleteTodo };
+const getCategories = async (req, res) => {
+  const notes = await Todos.find();
+  console.log(notes, "notes");
+  let categories = [];
+
+  notes.map((note) => {
+    if (categories.includes(note.category)) {
+      return;
+    } else {
+      categories.push(note.category);
+    }
+  });
+
+  console.log(categories, "categories");
+  res.status(httpStatusCodes.OK).json({ categories, msg: "Your categories" });
+ 
+};
+
+export { getTodos, createTodo, updateTodo, deleteTodo, getCategories };

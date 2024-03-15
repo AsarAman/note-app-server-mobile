@@ -10,19 +10,22 @@ const NoteSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please Provide Description"],
     },
-    category:{
+    category: {
       type: String,
-      required: [true, 'Please provide category']
-
+      required: [true, "Please provide category"],
     },
-    createdBy:{
+    createdBy: {
       type: mongoose.Types.ObjectId,
-      ref:'Users',
-      required:[true, 'please provide user']
+      ref: "Users",
+      required: [true, "please provide user"],
     },
-    dueDate:{
-      type: Date
-    }
+    dueDate: {
+      type: Date,
+    },
+    bookMark: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
