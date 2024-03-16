@@ -3,6 +3,19 @@ import httpStatusCodes from "http-status-codes";
 
 import BadRequestError from "../errors/bad-request.js";
 
+import cloudinary from "cloudinary";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+cloudinary.v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 const getTodos = async (req, res) => {
   console.log("query", req.query);
   console.log(req.user);
@@ -42,17 +55,26 @@ const getTodos = async (req, res) => {
 
 const createTodo = async (req, res) => {
   console.log("create note", req.body);
-  const { title, description, category, dueDate } = req.body;
-  console.log(dueDate);
+  const { title, description, category, dueDate, image } = req.body;
+  console.log(image, 'image');
 
   if (!title || !description || !category) {
     throw new BadRequestError("Please provide all values");
+  }
+  let uplaodImage;
+  if (image) {
+    uplaodImage = await cloudinary.uploader.upload(image, {
+      upload_preset: "blogWebsite",
+      
+    });
+    console.log("upload", uplaodImage);
   }
   const todo = await Todos.create({
     title,
     description,
     category,
     dueDate: dueDate,
+    image:image,
 
     createdBy: req.user.userId,
   });
