@@ -56,7 +56,7 @@ const getTodos = async (req, res) => {
 const createTodo = async (req, res) => {
   console.log("create note", req.body);
   const { title, description, category, dueDate, image } = req.body;
-  console.log(image, 'image');
+  console.log(image, "image");
 
   if (!title || !description || !category) {
     throw new BadRequestError("Please provide all values");
@@ -65,7 +65,6 @@ const createTodo = async (req, res) => {
   if (image) {
     uplaodImage = await cloudinary.uploader.upload(image, {
       upload_preset: "blogWebsite",
-      
     });
     console.log("upload", uplaodImage);
   }
@@ -74,7 +73,7 @@ const createTodo = async (req, res) => {
     description,
     category,
     dueDate: dueDate,
-    image:image,
+    image: uplaodImage.secure_url,
 
     createdBy: req.user.userId,
   });
@@ -134,11 +133,10 @@ const getCategories = async (req, res) => {
     }
   });
 
-  categories.unshift('all')
+  categories.unshift("all");
 
   console.log(categories, "categories");
   res.status(httpStatusCodes.OK).json({ categories, msg: "Your categories" });
- 
 };
 
 export { getTodos, createTodo, updateTodo, deleteTodo, getCategories };
