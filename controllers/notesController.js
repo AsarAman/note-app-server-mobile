@@ -86,9 +86,11 @@ const updateTodo = async (req, res) => {
   const { id } = req.params;
   const { title, description, category, dueDate, image } = req.body;
 
-  if ((!title, !description, !category)) {
-    throw new BadRequestError("Please provide all required values!");
-  }
+  // if ((!title, !description, !category)) {
+  //   throw new BadRequestError("Please provide all required values!");
+  // }
+
+  console.log(title, description, category, dueDate)
 
   const findTask = await Todos.findById({ _id: id });
 
