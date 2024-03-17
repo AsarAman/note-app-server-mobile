@@ -2,6 +2,7 @@ import Todos from "../models/Note.js";
 import httpStatusCodes from "http-status-codes";
 
 import BadRequestError from "../errors/bad-request.js";
+import NotFoundError from "../errors/not-found.js";
 
 import cloudinary from "cloudinary";
 import dotenv from "dotenv";
@@ -83,27 +84,57 @@ const createTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   const { id } = req.params;
+  const { title, description, category, dueDate, image } = req.body;
+
+  if ((!title, !description, !category)) {
+    throw new BadRequestError("Please provide all required values!");
+  }
+
+  const findTask = await Todos.findById({ _id: id });
+
+  if (!findTask) {
+    throw new NotFoundError(`Task not found with id ${id}`);
+  }
+  let uplaodImage;
+  if (image) {
+    uplaodImage = await cloudinary.uploader.upload(image, {
+      upload_preset: "blogWebsite",
+    });
+    console.log("upload", uplaodImage);
+  }
+
+  findTask.title = title;
+  findTask.description = description;
+  findTask.category = category;
+  findTask.dueDate = dueDate;
+  findTask.image = uplaodImage.secure_url;
+  findTask.createdBy = req.user.userId;
+
+  await findTask.save();
+  res
+    .status(httpStatusCodes.OK)
+    .json({ findTask, msg: "Note updated successfully!" });
 
   //if (!name || !description){
   //  return res.status(400).send("please provide all values");
   //}
 
-  const task = await Todos.findOneAndUpdate(
-    { _id: id, createdBy: req.user.userId },
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
-  if (!task) {
-    return res
-      .status(httpStatusCodes.NOT_FOUND)
-      .json({ msg: `no item with id ${id}`, success: false });
-  }
-  res
-    .status(httpStatusCodes.OK)
-    .json({ task, msg: "Note updated successfully!" });
+  // const task = await Todos.findOneAndUpdate(
+  //   { _id: id, createdBy: req.user.userId },
+  //   req.body,
+  //   {
+  //     new: true,
+  //     runValidators: true,
+  //   }
+  // );
+  // if (!task) {
+  //   return res
+  //     .status(httpStatusCodes.NOT_FOUND)
+  //     .json({ msg: `no item with id ${id}`, success: false });
+  // }
+  // res
+  //   .status(httpStatusCodes.OK)
+  //   .json({ task, msg: "Note updated successfully!" });
 };
 
 const deleteTodo = async (req, res) => {
