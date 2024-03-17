@@ -86,8 +86,16 @@ const updateTodo = async (req, res) => {
   const { id } = req.params;
   const { title, description, category, dueDate, image, bookMark } = req.body;
   if (bookMark) {
+    const findOne = await Todos.findOneAndUpdate(
+      { _d: id, createdBy: req.user.userId },
+      { $set: { bookMark: { $not: "$bookMark" } } },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     console.log(bookMark, "bookmark");
-    res.json({ data: bookMark });
+    res.json({ data: bookMark, item:findOne });
     return;
   }
 
