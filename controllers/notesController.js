@@ -88,14 +88,18 @@ const updateTodo = async (req, res) => {
   if (bookMark) {
     const findOne = await Todos.findOneAndUpdate(
       { _d: id, createdBy: req.user.userId },
-      { $set: { bookMark: { $not: "$bookMark" } } },
+      {
+        $set: {
+          bookMark: { $cond: { if: "$bookMark", then: false, else: true } },
+        },
+      },
       {
         new: true,
         runValidators: true,
       }
     );
     console.log(bookMark, "bookmark");
-    res.json({ data: bookMark, item:findOne });
+    res.json({ data: bookMark, item: findOne });
     return;
   }
 
