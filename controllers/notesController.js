@@ -83,7 +83,7 @@ const createTodo = async (req, res) => {
 };
 
 const updateTodo = async (req, res) => {
-  const { id } = req.params;
+  const { id} = req.params;
   const { title, description, category, dueDate, image, bookMark } = req.body;
   if (bookMark) {
     const findOne = await Todos.findOneAndUpdate(
