@@ -84,13 +84,18 @@ const createTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   const { id } = req.params;
-  const { title, description, category, dueDate, image } = req.body;
+  const { title, description, category, dueDate, image, bookMark } = req.body;
+  if (bookMark) {
+    console.log(bookMark, "bookmark");
+    res.json({ data: bookMark });
+    return;
+  }
 
-  // if ((!title, !description, !category)) {
-  //   throw new BadRequestError("Please provide all required values!");
-  // }
+  if ((!title, !description, !category)) {
+    throw new BadRequestError("Please provide all required values!");
+  }
 
-  console.log(title, description, category, dueDate)
+  console.log(title, description, category, dueDate);
 
   const findTask = await Todos.findById({ _id: id });
 
@@ -116,27 +121,6 @@ const updateTodo = async (req, res) => {
   res
     .status(httpStatusCodes.OK)
     .json({ findTask, msg: "Note updated successfully!" });
-
-  //if (!name || !description){
-  //  return res.status(400).send("please provide all values");
-  //}
-
-  // const task = await Todos.findOneAndUpdate(
-  //   { _id: id, createdBy: req.user.userId },
-  //   req.body,
-  //   {
-  //     new: true,
-  //     runValidators: true,
-  //   }
-  // );
-  // if (!task) {
-  //   return res
-  //     .status(httpStatusCodes.NOT_FOUND)
-  //     .json({ msg: `no item with id ${id}`, success: false });
-  // }
-  // res
-  //   .status(httpStatusCodes.OK)
-  //   .json({ task, msg: "Note updated successfully!" });
 };
 
 const deleteTodo = async (req, res) => {
