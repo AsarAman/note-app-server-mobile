@@ -28,6 +28,10 @@ const NoteSchema = new mongoose.Schema(
     },
     image:{
       type: String
+    },
+    isCompleted:{
+      type:Boolean,
+      default:false
     }
   },
   { timestamps: true }

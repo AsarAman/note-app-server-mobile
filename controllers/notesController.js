@@ -84,7 +84,9 @@ const createTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   const { id } = req.params;
-  const { title, description, category, dueDate, image, bookMark } = req.body;
+  const { title, description, category, dueDate, image, bookMark, completed } =
+    req.body;
+  //bookmarking
   if (bookMark) {
     const findTask = await Todos.findOne({ _id: id });
     if (findTask) {
@@ -96,6 +98,24 @@ const updateTodo = async (req, res) => {
       );
 
       console.log(bookMark, "bookmark");
+      return res.json({ data: bookMark, item: updatedTask });
+    }
+
+    return;
+  }
+
+  //completed
+  if (completed) {
+    const findTask = await Todos.findOne({ _id: id });
+    if (findTask) {
+      const toggleComplete = !findTask.isCompleted;
+      const updatedTask = await Todos.findOneAndUpdate(
+        { _id: id, createdBy: req.user.userId },
+        { $set: { isCompleted: toggleComplete } },
+        { new: true, runValidators: true }
+      );
+
+      console.log(completed, "completed");
       return res.json({ data: bookMark, item: updatedTask });
     }
 
