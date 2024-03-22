@@ -74,7 +74,7 @@ const createTodo = async (req, res) => {
     description,
     category,
     dueDate: dueDate,
-    image: uplaodImage.secure_url,
+    image: uplaodImage && uplaodImage.secure_url,
 
     createdBy: req.user.userId,
   });
