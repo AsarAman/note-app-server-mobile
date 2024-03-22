@@ -83,7 +83,7 @@ const updateUser = async (req, res) => {
   findUser.name = name;
   findUser.email = email;
   findUser.password = password;
-  findUser.picture = uplaodImage.secure_url;
+  findUser.picture = uplaodImage && uplaodImage.secure_url;
 
   await findUser.save();
   const token = findUser.assignJWT();
