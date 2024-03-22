@@ -169,7 +169,7 @@ const deleteTodo = async (req, res) => {
 };
 
 const getCategories = async (req, res) => {
-  const notes = await Todos.find();
+  const notes = await Todos.find({ createdBy: req.user.userId});
   console.log(notes, "notes");
   let categories = [];
 
