@@ -145,7 +145,7 @@ const updateTodo = async (req, res) => {
   findTask.description = description;
   findTask.category = category;
   findTask.dueDate = dueDate;
-  findTask.image = uplaodImage.secure_url;
+  findTask.image = uplaodImage && uplaodImage.secure_url;
   findTask.createdBy = req.user.userId;
 
   await findTask.save();
