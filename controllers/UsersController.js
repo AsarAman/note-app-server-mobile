@@ -29,7 +29,7 @@ const registerUser = async (req, res) => {
       email: person.email,
       id: person._id,
       token: token,
-      password:person.password
+      
     },
     message: "User successfully registered!",
   });
@@ -59,7 +59,7 @@ const loginUser = async (req, res) => {
       id: user._id,
       profile: user.picture,
       token: token,
-      password:user.password
+      
     },
     message: "User successfully Logged In!",
   });

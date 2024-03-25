@@ -18,8 +18,7 @@ cloudinary.config({
 });
 
 const getTodos = async (req, res) => {
-  console.log("query", req.query);
-  console.log(req.user);
+ 
   const { sort, category, search } = req.query;
   const queryObject = {
     createdBy: req.user.userId,
